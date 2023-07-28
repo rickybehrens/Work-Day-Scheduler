@@ -3,6 +3,17 @@ body {
   font-size: 16px;
 }
 
+#message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 10vh; /* Optional: adjust the height to center the message vertically */
+}
+
+#messageText {
+  text-align: center; /* Center the text horizontally */
+}
+
 textarea {
   background: transparent;
   border: none;
