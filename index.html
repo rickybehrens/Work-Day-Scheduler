@@ -24,12 +24,17 @@
   <header class="p-5 mb-4 border-5 border-bottom border-dark text-center">
     <h1 class="display-3">Work Day Scheduler</h1>
     <p class="lead">A simple calendar app for scheduling your work day</p>
+    <!-- This element will display the current day and time -->
     <p id="currentDay" class="lead"></p>
   </header>
+
   <div class="container-lg px-5">
     <div id="message">
+      <!-- This element will display a message when an appointment is added -->
       <p id="messageText"></p>
     </div>
+
+    <!-- Time blocks for different hours of the day. Each time block contains an hour label, a textarea for entering the appointment description, and a save button -->
     <div id="hour-09" class="row time-block">
       <div class="col-2 col-md-1 hour text-end py-3">9AM</div>
       <textarea class="col-8 col-md-10 description" rows="3"> </textarea>

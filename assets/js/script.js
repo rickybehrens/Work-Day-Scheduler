@@ -27,20 +27,23 @@ $(document).ready(function () {
 
     // Check if the time represented by the last two characters is less than the current hour.
     if (parseInt(lastTwoCharacters) < parseInt(today.format('H'))) {
-      block.classList.remove('present', 'future'); // Remove 'present' and 'future' classes from the element.
       block.classList.add('past'); // Add the 'past' class to the element.
     } else if (parseInt(lastTwoCharacters) > parseInt(today.format('H'))) {
-      block.classList.remove('past', 'present'); // Remove 'past' and 'future' classes from the element.
       block.classList.add('future'); // Add the 'future' class to the element.
     } else {
-      block.classList.remove('past', 'future'); // Remove 'past' and 'present' classes from the element.
       block.classList.add('present'); // Add the 'present' class to the element.
     }
   });
 
   // Function to save the user's input from the 'description' field to localStorage.
   function saveDataToLocalStorage(description, id) {
-    localStorage.setItem(id, description); // Save the description value in localStorage with the time block ID as the key.
+    if (description.trim() !== '') {
+      localStorage.setItem(id, description); // Save the description value in localStorage with the time block ID as the key.
+      showMessage('Appointment Added to localStorage ✔️'); // Show the save message.
+    } else {
+      localStorage.removeItem(id); // Remove the data from localStorage using the provided time block ID as the key.
+      showMessage('Appointment Deleted from localStorage ✔️'); // Show the delete message.
+    }
   }
 
   // Function to load the saved data from localStorage and display it in the 'description' field for each time block.
@@ -62,23 +65,27 @@ $(document).ready(function () {
   updateTime();
 
   // Add event listeners to all elements with class 'saveBtn'.
-  var saveButtons = document.querySelectorAll('.saveBtn');
-  saveButtons.forEach(button => {
-    // Attach a click event listener to each 'saveBtn' element.
-    button.addEventListener('click', (event) => {
-      var descriptionField = event.target.parentElement.querySelector('.description');
+var saveButtons = document.querySelectorAll('.saveBtn');
+saveButtons.forEach(button => {
+  // Attach a click event listener to each 'saveBtn' element.
+  button.addEventListener('click', (event) => {
+    var descriptionField = event.currentTarget.parentElement.querySelector('.description');
+    if (descriptionField) {
       var description = descriptionField.value;
-      var id = event.target.parentElement.id;
-      saveDataToLocalStorage(description, id); // Call the function to save the user's input to localStorage when the button is clicked.
-      showMessage(); // Call the function to show the message.
-    });
+      var id = event.currentTarget.parentElement.id;
+      saveDataToLocalStorage(description, id); // Call the function to save the user's input or delete the data from localStorage when the button is clicked.
+    } else {
+      // If 'descriptionField' is null, it means the description field is empty, and there's no need to delete the data from localStorage.
+      showMessage('No appointment to delete.');
+    }
   });
+});
 
-  // Function to show the message container when the save button is clicked.
-  function showMessage() {
+  // Modified showMessage() function to accept a custom message.
+  function showMessage(message) {
     var messageElement = document.getElementById('message');
     var messageTextElement = document.getElementById('messageText');
-    messageTextElement.textContent = "Appointment Added to localStorage ✔️"; // Set the message text
+    messageTextElement.textContent = message; // Set the custom message text.
     messageElement.style.display = 'block'; // Set the display property to 'block' to show the message.
   
     // Set a timeout to hide the message after 3 seconds (3000 milliseconds).
@@ -87,4 +94,3 @@ $(document).ready(function () {
     }, 3000); // Adjust the time (in milliseconds) as per your preference.
   }
 });
-
